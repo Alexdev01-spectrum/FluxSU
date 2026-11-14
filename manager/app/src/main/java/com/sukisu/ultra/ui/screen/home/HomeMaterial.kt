@@ -172,6 +172,10 @@ fun HomePagerMaterial(
                 AiFeatureBridge.HomeCard(onOpenChat = actions.onOpenAi)
             }
             StatsRow(state = state, actions = actions)
+            if (state.showFluxDashboard) {
+                FluxInfoRowMaterial(state = state)
+                QuickTogglesMaterial(state = rememberQuickToggleState())
+            }
             InfoCard(systemInfo = state.systemInfo, showFullStatus = state.showFullStatus)
             SupportLinks(onOpenUrl = actions.onOpenUrl)
             Spacer(

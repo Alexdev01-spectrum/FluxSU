@@ -1674,4 +1674,16 @@
     <string name="theme_store_comments_format_link">Insert link</string>
     <string name="theme_store_comments_login_to_reply">Sign in to reply</string>
     <string name="theme_store_device_reauthorize">Reset device authorization (request again on next connection)</string>
+    <!-- FluxSU dashboard -->
+    <string name="flux_dashboard_selinux">SELinux</string>
+    <string name="flux_dashboard_mode">Mode</string>
+    <string name="flux_dashboard_kernel">Kernel</string>
+    <string name="flux_quick_toggles">Quick toggles</string>
+    <string name="flux_quick_su_title">Root access (su)</string>
+    <string name="flux_quick_su_summary">Allow apps to request root through su</string>
+    <string name="flux_quick_umount_title">Module umount</string>
+    <string name="flux_quick_umount_summary">Unmount modules for apps that opt in</string>
+    <string name="flux_quick_mounthide_title">Hide mounts</string>
+    <string name="flux_quick_mounthide_summary">Hide suspicious mounts from apps</string>
+    <string name="flux_quick_failed">Could not change this setting on your kernel</string>
 </resources>

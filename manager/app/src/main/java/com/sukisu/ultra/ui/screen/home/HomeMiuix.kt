@@ -200,6 +200,10 @@ fun HomePagerMiuix(
                             }
                         }
                         StatsRow(state = state, actions = actions)
+                        if (state.showFluxDashboard) {
+                            FluxInfoRowMiuix(state = state)
+                            QuickTogglesMiuix(state = rememberQuickToggleState())
+                        }
                         InfoCard(
                             systemInfo = state.systemInfo,
                             showFullStatus = state.showFullStatus,
