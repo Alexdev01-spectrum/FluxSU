@@ -87,8 +87,8 @@ fun KernelModulesMaterial(
             WindowInsetsSides.Top + WindowInsetsSides.Horizontal,
         ),
     ) { padding ->
-        when {
-            state.snapshot == null && state.isLoading -> {
+        when (state.snapshot) {
+            null if state.isLoading -> {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -98,8 +98,7 @@ fun KernelModulesMaterial(
                     CircularProgressIndicator()
                 }
             }
-
-            state.snapshot == null -> {
+            null -> {
                 ErrorStateMaterial(
                     modifier = Modifier
                         .fillMaxSize()
@@ -107,13 +106,12 @@ fun KernelModulesMaterial(
                     onRetry = actions.onRefresh,
                 )
             }
-
             else -> {
                 val snapshot = state.snapshot
                 val isEmpty = snapshot.entries.isEmpty() &&
-                    snapshot.suggestedNames.isEmpty() &&
-                    snapshot.paramsNames.isEmpty() &&
-                    snapshot.hiddenDeviceBlocklistCount == 0
+                        snapshot.suggestedNames.isEmpty() &&
+                        snapshot.paramsNames.isEmpty() &&
+                        snapshot.hiddenDeviceBlocklistCount == 0
                 // An unreadable source must never look like "nothing is blocked".
                 if (isEmpty && snapshot.activeAvailable && snapshot.configAvailable) {
                     EmptyStateMaterial(
