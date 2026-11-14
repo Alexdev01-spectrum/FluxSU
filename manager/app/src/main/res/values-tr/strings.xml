@@ -45,7 +45,6 @@
     <string name="home_learn_kernelsu_url">https://sukisu.org/guide/</string>
     <string name="home_click_to_learn_kernelsu">FluxSU\'nun nasıl kurulacağını ve modüllerin nasıl kullanılacağını öğrenin.</string>
     <string name="home_support_title">Bizi Destekleyin</string>
-    <string name="home_support_content">FluxSU ücretsiz ve açık kaynaklı bir yazılımdır ve her zaman öyle kalacaktır. Ancak bağış yaparak bize destek olduğunuzu gösterebilirsiniz.</string>
     <string name="about_source_code"><![CDATA[%1$s adresinde kaynak kodunu görüntüleyin.\\<br>%2$s kanalımıza katılın.<br><br>Simgeler özel bir anlaşma kapsamında lisanslanmıştır: 怡子日日 tarafından çizilmiş, telif hakkı 明风OuO\'ya aittir ve vektörleştirilmiş simgeler bu proje tarafından sağlanmaktadır.]]></string>
     <string name="profile" translatable="false">Uygulama profili</string>
     <string name="profile_default">Varsayılan</string>

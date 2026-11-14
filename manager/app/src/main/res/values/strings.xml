@@ -116,7 +116,7 @@
     <string name="home_learn_kernelsu_url">https://github.com/Alexdev01-spectrum/FluxSU</string>
     <string name="home_click_to_learn_kernelsu">Learn how to install FluxSU and use modules.</string>
     <string name="home_support_title">Support Us</string>
-    <string name="home_support_content">FluxSU is, and always will be, free, and open source. However, you can show us that you care by making a donation.</string>
+    <string name="home_support_content">FluxSU is free and open source. Questions, feedback, or want to support us? Message us on Telegram.</string>
     <string name="about_contributors">Main contributors</string>
     <string name="about_contributors_hint">Drag to explore, pinch to zoom, tap an avatar to open the profile.</string>
     <string name="about_wordmark_hint">Every letter is a contributor\'s name. Pinch to zoom in.</string>

@@ -611,7 +611,7 @@ private fun SupportLinks(
     SegmentedColumn(modifier = modifier.fillMaxWidth()) {
         item {
             SegmentedListItem(
-                onClick = { onOpenUrl("https://patreon.com/weishu") },
+                onClick = { onOpenUrl("https://t.me/alexdevyuhhh") },
                 headlineContent = { Text(stringResource(R.string.home_support_title)) },
                 supportingContent = { Text(stringResource(R.string.home_support_content)) },
                 leadingContent = {
