@@ -23,6 +23,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -96,8 +98,8 @@ import com.sukisu.ultra.ui.util.drawPainterCover
 import com.sukisu.ultra.ui.util.module.LatestVersionInfo
 import java.io.File
 
-private val HeroShape = RoundedCornerShape(28.dp)
-private val TileShape = RoundedCornerShape(22.dp)
+private val HeroShape = CutCornerShape(topEnd = 22.dp, bottomStart = 22.dp)
+private val TileShape = CutCornerShape(topEnd = 12.dp, bottomStart = 12.dp)
 
 @Composable
 fun HomePagerMaterial(
@@ -121,6 +123,7 @@ fun HomePagerMaterial(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+            TerminalPromptMaterial(state = state)
             StatusCard(
                 state = state,
                 actions = actions,
@@ -417,6 +420,7 @@ private fun InactiveStatusCard(
         modifier = Modifier.fillMaxWidth(),
         color = backgroundAwareColor(MaterialTheme.colorScheme.surfaceBright),
         shape = HeroShape,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         onClick = onClick,
     ) {
         Column(
@@ -454,11 +458,11 @@ private fun InactiveStatusCard(
             )
             if (notInstalled) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Button(onClick = actions.onInstallClick) {
+                    Button(onClick = actions.onInstallClick, shape = TileShape) {
                         Text(customText(CustomTextKey.HOME_BTN_INSTALL))
                     }
                     if (state.isSELinuxPermissive) {
-                        OutlinedButton(onClick = actions.onJailbreakClick) {
+                        OutlinedButton(onClick = actions.onJailbreakClick, shape = TileShape) {
                             Text(stringResource(R.string.home_jailbreak))
                         }
                     }
@@ -559,6 +563,7 @@ private fun StatTile(
             modifier = modifier,
             shape = TileShape,
             color = backgroundAwareColor(MaterialTheme.colorScheme.surfaceBright),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
             content = content,
         )
     } else {
@@ -566,6 +571,7 @@ private fun StatTile(
             modifier = modifier,
             shape = TileShape,
             color = backgroundAwareColor(MaterialTheme.colorScheme.surfaceBright),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
             content = content,
         )
     }
@@ -643,6 +649,7 @@ private fun SpecSheet(
         modifier = modifier.fillMaxWidth(),
         shape = TileShape,
         color = backgroundAwareColor(MaterialTheme.colorScheme.surfaceBright),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
     ) {
         Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)) {
             rows.forEachIndexed { index, (label, value) ->

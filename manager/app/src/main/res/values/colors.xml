@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ic_launcher_background">#FF10131C</color>
+    <color name="ic_launcher_background">#FF0A0E0A</color>
     <color name="ic_launcher_alt_foreground">#FF1E110D</color>
     <color name="ic_launcher_zako_foreground">#FF1E110D</color>
     <color name="ic_launcher_foreground">#FF1E110D</color>

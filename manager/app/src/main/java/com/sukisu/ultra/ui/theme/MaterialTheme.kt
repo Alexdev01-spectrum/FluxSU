@@ -59,7 +59,7 @@ fun MaterialExpressivePalette(
     }
     MaterialExpressiveTheme(
         colorScheme = overlaidScheme,
-        motionScheme = MotionScheme.expressive(),
+        motionScheme = MotionScheme.standard(),
         shapes = Shapes,
         typography = Typography,
         content = content,
@@ -77,13 +77,19 @@ fun MaterialKernelSUTheme(
     val amoledMode = appSettings.colorMode.isAmoled
     val dynamicColor = appSettings.keyColor == 0
 
-    val colorScheme = rememberKernelSUColorScheme(
+    val generatedScheme = rememberKernelSUColorScheme(
         seedColor = if (dynamicColor) Color.Unspecified else Color(appSettings.keyColor),
         isDark = darkTheme,
         isAmoled = amoledMode,
         paletteStyle = appSettings.paletteStyle,
         colorSpec = appSettings.colorSpec,
     )
+    // FluxSU: the terminal palette is the default; a user-picked key colour still wins.
+    val colorScheme = if (dynamicColor) {
+        remember(darkTheme, amoledMode) { fluxTerminalColorScheme(darkTheme, amoledMode) }
+    } else {
+        generatedScheme
+    }
 
     LaunchedEffect(darkTheme) {
         val window = (context as? Activity)?.window ?: return@LaunchedEffect
@@ -119,7 +125,7 @@ fun MaterialKernelSUTheme(
 
     MaterialExpressiveTheme(
         colorScheme = overlaidScheme,
-        motionScheme = MotionScheme.expressive(),
+        motionScheme = MotionScheme.standard(),
         shapes = Shapes,
         typography = Typography,
         content = {

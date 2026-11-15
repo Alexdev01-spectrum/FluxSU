@@ -3,11 +3,11 @@
     android:viewportWidth="108" android:viewportHeight="108">
     <!-- FluxSU mark: stylised bolt. Group names are targeted by the splash animators. -->
     <group android:name="splash_main_body" android:pivotX="54" android:pivotY="54">
-        <path android:fillColor="#FF7C5CFF"
+        <path android:fillColor="#FF39FF88"
             android:pathData="M60,24 L38,56 L52,56 L46,84 L72,48 L56,48 Z"/>
     </group>
     <group android:name="splash_accent_heart" android:pivotX="64" android:pivotY="38">
-        <path android:fillColor="#FF00E5FF"
+        <path android:fillColor="#FF5CE1E6"
             android:pathData="M60,24 L56,48 L72,48 Z"/>
     </group>
 </vector>

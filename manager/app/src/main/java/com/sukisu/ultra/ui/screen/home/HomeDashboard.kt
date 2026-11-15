@@ -2,6 +2,13 @@ package com.sukisu.ultra.ui.screen.home
 
 import android.system.OsConstants
 import android.widget.Toast
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,7 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -188,8 +195,9 @@ private fun InfoTileMaterial(
 ) {
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(22.dp),
+        shape = CutCornerShape(topEnd = 12.dp, bottomStart = 12.dp),
         color = backgroundAwareColor(MaterialTheme.colorScheme.surfaceBright),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
     ) {
         Column(
             modifier = Modifier
@@ -344,5 +352,57 @@ fun QuickTogglesMiuix(state: QuickToggleState, modifier: Modifier = Modifier) {
                 onCheckedChange = state::setMountHide,
             )
         }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------
+// Terminal prompt header (Material)
+// ---------------------------------------------------------------------------------------------
+
+/** A fake shell prompt with a blinking cursor and a one-line kernel status. */
+@Composable
+fun TerminalPromptMaterial(state: HomeUiState, modifier: Modifier = Modifier) {
+    val cursorAlpha by rememberInfiniteTransition(label = "prompt_cursor").animateFloat(
+        initialValue = 1f,
+        targetValue = 0f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 530, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse,
+        ),
+        label = "prompt_cursor_alpha",
+    )
+    val active = state.ksuVersion != null
+    val primary = MaterialTheme.colorScheme.primary
+    val statusColor = if (active) primary else MaterialTheme.colorScheme.error
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 4.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp),
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            MdText(
+                text = "flux@su:~\$ ",
+                style = MaterialTheme.typography.bodyMedium,
+                color = primary,
+                fontWeight = FontWeight.Bold,
+            )
+            MdText(
+                text = "./status",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+            MdText(
+                text = "\u2588",
+                style = MaterialTheme.typography.bodyMedium,
+                color = primary.copy(alpha = cursorAlpha),
+            )
+        }
+        MdText(
+            text = if (active) "[ OK ] kernel module active" else "[FAIL] kernel module not loaded",
+            style = MaterialTheme.typography.bodySmall,
+            color = statusColor,
+        )
     }
 }
