@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
@@ -433,7 +434,7 @@ private fun ThemeStoreSourcesMaterial(
             item(key = "summary") {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(24.dp),
+                    shape = CutCornerShape(topEnd = 12.dp, bottomStart = 12.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
                     ),
@@ -606,7 +607,7 @@ private fun SourceCardMaterial(
     var endpointsExpanded by rememberSaveable { mutableStateOf(false) }
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(24.dp),
+        shape = CutCornerShape(topEnd = 12.dp, bottomStart = 12.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         ),
@@ -751,7 +752,7 @@ private fun EndpointRowsMaterial(
     endpoints: SourceEndpoints?,
 ) {
     Surface(
-        shape = RoundedCornerShape(16.dp),
+        shape = CutCornerShape(topEnd = 8.dp, bottomStart = 8.dp),
         color = MaterialTheme.colorScheme.surfaceContainerHigh,
         modifier = Modifier.fillMaxWidth(),
     ) {

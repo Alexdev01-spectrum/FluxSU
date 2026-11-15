@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -134,7 +135,7 @@ fun AppProfileScreenMaterial(
                     label = state.appGroup.primary.label,
                     modifier = Modifier
                         .size(60.dp)
-                        .clip(RoundedCornerShape(20.dp))
+                        .clip(CutCornerShape(topEnd = 10.dp, bottomStart = 10.dp))
                 )
             },
             appUid = state.uid,

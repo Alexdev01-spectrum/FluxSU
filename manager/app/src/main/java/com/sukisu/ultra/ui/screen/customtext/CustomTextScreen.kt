@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -522,7 +523,7 @@ private fun MiuixVariableRow(arg: CustomTextArg) {
             style = MiuixTheme.textStyles.body2,
             color = colorScheme.onPrimaryContainer,
             modifier = Modifier
-                .clip(RoundedCornerShape(8.dp))
+                .clip(CutCornerShape(topEnd = 6.dp, bottomStart = 6.dp))
                 .background(colorScheme.primaryContainer)
                 .padding(horizontal = 8.dp, vertical = 2.dp),
         )
@@ -543,7 +544,7 @@ private fun MaterialVariableRow(arg: CustomTextArg, modifier: Modifier = Modifie
         )
         Box(
             modifier = Modifier
-                .clip(RoundedCornerShape(8.dp))
+                .clip(CutCornerShape(topEnd = 6.dp, bottomStart = 6.dp))
                 .background(MaterialTheme.colorScheme.primaryContainer)
                 .padding(horizontal = 8.dp, vertical = 2.dp),
         ) {

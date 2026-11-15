@@ -70,6 +70,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
@@ -89,7 +90,7 @@ import com.sukisu.ultra.ui.theme.LocalBackgroundImagePath
 import com.sukisu.ultra.ui.util.ownerNameForUid
 import com.sukisu.ultra.ui.viewmodel.AppSortType
 
-private val AppIconShape = RoundedCornerShape(14.dp)
+private val AppIconShape = CutCornerShape(topEnd = 7.dp, bottomStart = 7.dp)
 
 @Composable
 private fun SuperUserHeader(

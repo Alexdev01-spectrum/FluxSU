@@ -86,8 +86,8 @@ import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 val LocalListItemShapes = compositionLocalOf<ListItemShapes?> { null }
-private val SegmentedOuterRadius = 24.dp
-private val SegmentedInnerRadius = 6.dp
+private val SegmentedOuterRadius = 0.dp
+private val SegmentedInnerRadius = 0.dp
 private const val SegmentedSpringStiffness = 800f
 private const val SegmentedSpringDamping = 0.9f
 
@@ -443,7 +443,7 @@ fun IconTile(
     Box(
         modifier = Modifier
             .size(36.dp)
-            .clip(RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(2.dp))
             .background(colorScheme.secondaryContainer),
         contentAlignment = Alignment.Center,
     ) {

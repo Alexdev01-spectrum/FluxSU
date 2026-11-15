@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Science
@@ -98,7 +99,7 @@ fun AboutScreenMaterial(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .size(64.dp)
-                                .clip(RoundedCornerShape(20.dp))
+                                .clip(CutCornerShape(topEnd = 10.dp, bottomStart = 10.dp))
                                 .background(Color.White)
                         ) {
                             BuiltinAppIconPreview(

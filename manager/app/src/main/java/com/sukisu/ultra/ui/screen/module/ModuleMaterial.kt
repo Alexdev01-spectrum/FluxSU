@@ -50,6 +50,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -738,7 +739,7 @@ private fun ModuleShortcutSheet(
                 modifier = Modifier
                     .padding(vertical = 13.dp)
                     .size(100.dp)
-                    .clip(RoundedCornerShape(25.dp))
+                    .clip(CutCornerShape(topEnd = 12.dp, bottomStart = 12.dp))
             ) {
                 val preview = shortcutState.previewIcon
                 if (preview != null) {

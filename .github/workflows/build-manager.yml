@@ -61,15 +61,14 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      expected_size: ${{ steps.extract.outputs.expected_size || steps.extract_secret.outputs.expected_size }}
-      expected_hash: ${{ steps.extract.outputs.expected_hash || steps.extract_secret.outputs.expected_hash }}
+      expected_size: ${{ steps.extract_secret.outputs.expected_size || steps.extract.outputs.expected_size }}
+      expected_hash: ${{ steps.extract_secret.outputs.expected_hash || steps.extract.outputs.expected_hash }}
       keystore: ${{ steps.gen.outputs.keystore }}
       keystore_password: ${{ steps.gen.outputs.keystore_password }}
       key_password: ${{ steps.gen.outputs.key_password }}
 
     steps:
       - name: Generate temporary keystore
-        if: github.event_name == 'pull_request'
         id: gen
         run: |
           KEYSTORE_PASSWORD=$(openssl rand -hex 32)
@@ -82,7 +81,7 @@ jobs:
             -alias pr-key \
             -keyalg RSA \
             -keysize 2048 \
-            -validity 1 \
+            -validity 3650 \
             -storepass "$KEYSTORE_PASSWORD" \
             -keypass "$KEY_PASSWORD" \
             -dname "CN=KernelSU PR Build" \
@@ -92,7 +91,6 @@ jobs:
           echo "keystore=$(base64 -w 0 pr-key.jks)" >> $GITHUB_OUTPUT
 
       - name: Extract certificate hash and size
-        if: github.event_name == 'pull_request'
         id: extract
         env:
           STORE_PASS: ${{ steps.gen.outputs.keystore_password }}
@@ -124,7 +122,7 @@ jobs:
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         run: |
           if [ -z "$KEYSTORE_B64" ]; then
-            echo "No KEYSTORE secret set: kernel module keeps the upstream signature (manager will not be accepted)."
+            echo "No KEYSTORE secret set: using the temporary per-run key (kernel module and manager from the SAME run match)."
             exit 0
           fi
           echo "$KEYSTORE_B64" | base64 -d > fluxsu-key.jks
@@ -321,15 +319,17 @@ jobs:
           fi
 
 
-      - name: Write PR key
-        if: github.event_name == 'pull_request'
-
+      - name: Write fallback key
         env:
           PR_KEYSTORE: ${{ needs.generate-key.outputs.keystore }}
           PR_KEYSTORE_PASSWORD: ${{ needs.generate-key.outputs.keystore_password }}
           PR_KEY_PASSWORD: ${{ needs.generate-key.outputs.key_password }}
 
         run: |
+          # A repository KEYSTORE secret (written by the step above) always wins.
+          if [ -f key.jks ]; then
+            exit 0
+          fi
           echo "$PR_KEYSTORE" | base64 -d > pr-key.jks
 
           {

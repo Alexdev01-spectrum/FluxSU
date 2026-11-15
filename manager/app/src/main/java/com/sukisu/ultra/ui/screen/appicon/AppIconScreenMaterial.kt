@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.AddToHomeScreen
@@ -402,7 +403,7 @@ private fun MaterialIconTile(
         ),
         label = "AppIconTilePressScale",
     )
-    val shape = RoundedCornerShape(20.dp)
+    val shape = CutCornerShape(topEnd = 10.dp, bottomStart = 10.dp)
 
     Column(
         modifier = Modifier.fillMaxWidth(),

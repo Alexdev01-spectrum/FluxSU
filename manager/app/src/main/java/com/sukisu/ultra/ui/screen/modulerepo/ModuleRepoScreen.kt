@@ -7,6 +7,7 @@ import android.util.LruCache
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -278,7 +279,7 @@ fun RepoModuleIcon(url: String?, modifier: Modifier = Modifier, size: Dp = 24.dp
             contentDescription = null,
             modifier = modifier
                 .size(size)
-                .clip(RoundedCornerShape(6.dp)),
+                .clip(CutCornerShape(topEnd = 6.dp, bottomStart = 6.dp)),
         )
     }
 }

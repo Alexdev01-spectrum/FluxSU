@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -67,7 +68,7 @@ fun AddAppPathDialog(
                 OutlinedTextField(
                     value = query, onValueChange = { query = it },
                     placeholder = { Text(stringResource(R.string.search_apps)) },
-                    singleLine = true, shape = RoundedCornerShape(24.dp), modifier = Modifier.fillMaxWidth(),
+                    singleLine = true, shape = CutCornerShape(topEnd = 12.dp, bottomStart = 12.dp), modifier = Modifier.fillMaxWidth(),
                 )
             }
             if (isLoadingApps) {
@@ -94,7 +95,7 @@ fun AddAppPathDialog(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                         ) {
-                            AppIconImage(packageInfo = app.packageInfo, label = app.appName, modifier = Modifier.size(44.dp).clip(RoundedCornerShape(12.dp)))
+                            AppIconImage(packageInfo = app.packageInfo, label = app.appName, modifier = Modifier.size(44.dp).clip(CutCornerShape(topEnd = 6.dp, bottomStart = 6.dp)))
                             Column(Modifier.weight(1f)) {
                                 if (miuix) {
                                     MiuixText(app.appName, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -113,7 +114,7 @@ fun AddAppPathDialog(
                             colors = top.yukonga.miuix.kmp.basic.CardDefaults.defaultColors(color = if (checked) MiuixTheme.colorScheme.secondaryContainer else backgroundAwareColor(MiuixTheme.colorScheme.surfaceContainer)),
                         ) { row() }
                     } else {
-                        Surface(shape = RoundedCornerShape(20.dp), color = if (checked) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow) { row() }
+                        Surface(shape = CutCornerShape(topEnd = 10.dp, bottomStart = 10.dp), color = if (checked) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow) { row() }
                     }
                 }
             }

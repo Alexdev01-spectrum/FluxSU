@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
@@ -353,7 +354,7 @@ private fun SummaryCardMaterial(snapshot: KernelModulesSnapshot) {
             Box(
                 modifier = Modifier
                     .size(52.dp)
-                    .clip(RoundedCornerShape(16.dp))
+                    .clip(CutCornerShape(topEnd = 8.dp, bottomStart = 8.dp))
                     .background(MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.12f)),
                 contentAlignment = Alignment.Center,
             ) {

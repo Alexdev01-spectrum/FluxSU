@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.MaterialTheme
@@ -285,8 +286,8 @@ private fun AppearanceEditor(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(surface, RoundedCornerShape(12.dp))
-                .border(1.dp, outlineColor.copy(alpha = 0.2f), RoundedCornerShape(12.dp)),
+                .background(surface, CutCornerShape(topEnd = 6.dp, bottomStart = 6.dp))
+                .border(1.dp, outlineColor.copy(alpha = 0.2f), CutCornerShape(topEnd = 6.dp, bottomStart = 6.dp)),
         ) {
             OverlayPresets.forEachIndexed { index, preset ->
                 if (index > 0) {
@@ -322,8 +323,8 @@ private fun AppearanceEditor(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(220.dp)
-                .background(surface, RoundedCornerShape(12.dp))
-                .border(1.dp, outlineColor.copy(alpha = 0.25f), RoundedCornerShape(12.dp))
+                .background(surface, CutCornerShape(topEnd = 6.dp, bottomStart = 6.dp))
+                .border(1.dp, outlineColor.copy(alpha = 0.25f), CutCornerShape(topEnd = 6.dp, bottomStart = 6.dp))
                 .padding(12.dp),
         ) {
             BasicTextField(

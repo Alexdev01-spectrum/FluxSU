@@ -39,7 +39,9 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Extension
 import androidx.compose.material.icons.filled.Home
@@ -73,6 +75,9 @@ import com.sukisu.ultra.ui.theme.backgroundAwareColor
 import com.sukisu.ultra.ui.util.CustomTextKey
 import com.sukisu.ultra.ui.util.customText
 import com.sukisu.ultra.ui.util.rememberProgressiveBarBlurModifier
+
+private val BarShape = CutCornerShape(topEnd = 14.dp, bottomStart = 14.dp)
+private val ItemShape = CutCornerShape(topEnd = 10.dp, bottomStart = 10.dp)
 
 @Composable
 fun BottomBarMaterial(
@@ -124,18 +129,19 @@ fun BottomBarMaterial(
                 gradient = ProgressiveBlur.Bottom,
                 tint = MaterialTheme.colorScheme.surfaceContainerHighest,
                 tintAlpha = 0.2f,
-                shape = CircleShape,
+                shape = BarShape,
             )
         } else {
             Modifier
         }
         Surface(
             modifier = Modifier.widthIn(max = 480.dp).then(progressiveModifier),
-            shape = CircleShape,
+            shape = BarShape,
             // A translucent sheet lets the progressive blur below the pill stay visible while
             // keeping the labels readable; the blur carries the edge gradient.
             color = if (progressiveBlur) pillColor.copy(alpha = 0.5f) else pillColor,
-            shadowElevation = 6.dp,
+            shadowElevation = 0.dp,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         ) {
             Row(
                 modifier = Modifier
@@ -262,7 +268,7 @@ private fun FloatingNavItem(
         Row(
             modifier = Modifier
                 .height(48.dp)
-                .clip(CircleShape)
+                .clip(ItemShape)
                 .background(containerColor)
                 .selectable(selected = selected, onClick = onClick, role = Role.Tab)
                 .animateContentSize()
