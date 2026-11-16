@@ -310,7 +310,7 @@
     <string name="module_repo_update_available">Perbarui</string>
     <string name="module_repo_installed">Terpasang</string>
     <string name="module_repo_using_cache">Gagal menyegarkan repositori, menampilkan salinan unduhan terakhir</string>
-    <string name="module_repo_unsupported_schema">Repositori modul menggunakan format yang lebih baru. Silakan perbarui SukiSU Manager.</string>
+    <string name="module_repo_unsupported_schema">Repositori modul menggunakan format yang lebih baru. Silakan perbarui FluxSU Manager.</string>
     <string name="module_repo_load_failed">Gagal memuat repositori modul</string>
     <string name="module_repo_empty">Tidak ada modul yang tersedia</string>
     <string name="module_repo_not_in_index">Modul ini sedang tidak ada di dalam indeks repositori dan tidak dapat dipasang dari sini.</string>

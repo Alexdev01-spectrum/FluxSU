@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
@@ -219,7 +220,7 @@ private fun ModuleInfoBannerHeaderMaterial(
         modifier = Modifier
             .fillMaxWidth()
             .height(140.dp)
-            .clip(RoundedCornerShape(24.dp))
+            .clip(CutCornerShape(topEnd = 12.dp, bottomStart = 12.dp))
             .background(MaterialTheme.colorScheme.surfaceContainerHigh),
         contentAlignment = Alignment.Center,
     ) {

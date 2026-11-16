@@ -5,6 +5,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
@@ -362,7 +363,7 @@ internal fun BuiltinZygiskMaterial(
                     item {
                         Surface(
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(16.dp),
+                            shape = CutCornerShape(topEnd = 8.dp, bottomStart = 8.dp),
                             color = MaterialTheme.colorScheme.surfaceContainer
                         ) {
                             Text(
@@ -477,7 +478,7 @@ private fun ZygiskBadge(
 ) {
     Box(
         modifier = Modifier
-            .clip(RoundedCornerShape(6.dp))
+            .clip(CutCornerShape(topEnd = 6.dp, bottomStart = 6.dp))
             .background(container)
             .padding(horizontal = 6.dp, vertical = 2.dp)
     ) {

@@ -1,11 +1,13 @@
 # FluxSU
 
-FluxSU is a fork of [SukiSU-Ultra](https://github.com/SukiSU-Ultra/SukiSU-Ultra), a kernel-based Android root solution derived from KernelSU.
+FluxSU is a fork of [SukiSU-Nova](https://github.com/SukiSU-Nova/SukiSU-Nova) (formerly SukiSU-Ultra), a kernel-based Android root solution derived from KernelSU.
 
 Changes over upstream:
 - Rebranded to FluxSU, with its own launcher icon
 - Home dashboard info row (mode, SELinux, kernel)
 - Quick toggles on the home screen (su, module umount, hide mounts)
+- Terminal-style UI (monospace type, sharp cut corners, phosphor palette)
+- Synced with SukiSU-Nova: built-in Zygisk, sus_path UID filter, module info dialog with editable banners, inode_setxattr LSM hook
 
 See `NOTICE-FluxSU.md` for licensing. FluxSU is distributed under the same GPL terms as upstream.
 
