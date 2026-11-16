@@ -66,8 +66,21 @@ jobs:
       keystore: ${{ steps.gen.outputs.keystore }}
       keystore_password: ${{ steps.gen.outputs.keystore_password }}
       key_password: ${{ steps.gen.outputs.key_password }}
+      can_publish: ${{ steps.secrets_check.outputs.can_publish }}
 
     steps:
+      - name: Detect optional secrets
+        id: secrets_check
+        env:
+          HAS_KEYSTORE: ${{ secrets.KEYSTORE }}
+          HAS_GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          if [ -n "$HAS_KEYSTORE" ] && [ -n "$HAS_GH_TOKEN" ]; then
+            echo "can_publish=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "can_publish=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Generate temporary keystore
         id: gen
         run: |
@@ -684,7 +697,7 @@ jobs:
           PROD_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
         run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
+          if [ "${{ github.event_name }}" = "pull_request" ] || [ -z "$PROD_KEYSTORE" ]; then
 
             echo "$PR_KEYSTORE" | base64 -d > pr-key.jks
 
@@ -763,8 +776,8 @@ jobs:
 
 
   publish-manager-ci:
-    needs: repack-manager
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: [repack-manager, generate-key]
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && needs.generate-key.outputs.can_publish == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
