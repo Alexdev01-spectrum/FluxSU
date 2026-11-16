@@ -493,10 +493,17 @@ jobs:
 
       - name: Build with Gradle
         run: |
+          set -o pipefail
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            ./gradlew clean assembleRelease -PIS_PR_BUILD=true
+            CMD=(./gradlew clean assembleRelease -PIS_PR_BUILD=true)
           else
-            ./gradlew clean assembleRelease
+            CMD=(./gradlew clean assembleRelease)
+          fi
+          if ! "${CMD[@]}" 2>&1 | tee gradle-build.log; then
+            # Surface the real error in the run's annotations so it is easy to find.
+            SUMMARY=$(grep -n -E "FAILURE|What went wrong|error:|^e: |Execution failed|Could not|Unresolved" -A5 gradle-build.log | head -60 | tr -d '\r' | sed ':a;N;$!ba;s/%/%25/g;s/\n/%0A/g')
+            echo "::error title=Gradle build failed::${SUMMARY}"
+            exit 1
           fi
 
 
