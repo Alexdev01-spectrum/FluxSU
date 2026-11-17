@@ -100,7 +100,7 @@ fun MiuixKernelSUTheme(
             }
             // Overlay after the background-aware contrast tweak: an explicit theme/user colour
             // always wins. The tokens are resolved once per theme change, not per frame.
-            val terminalColors = if (appSettings.keyColor == 0) readableColors.withFluxTerminal(darkTheme) else readableColors
+            val terminalColors = if (appSettings.keyColor == 0) readableColors.withFluxTerminal(darkTheme, FluxAccentStore.accent) else readableColors
             val overlaidColors = terminalColors.withAppearance(appSettings.appearance?.colorsFor(darkTheme))
             MiuixTheme(overlaidColors) {
                 MonetColorsProvider.UpdateCss()

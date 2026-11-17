@@ -1134,7 +1134,7 @@ pub fn patch(args: BootPatchArgs) -> Result<()> {
             let output_dir = out.unwrap_or(std::env::current_dir()?);
             let name = out_name.unwrap_or_else(|| {
                 let now = chrono::Utc::now();
-                format!("kernelsu_patched_{}.img", now.format("%Y%m%d_%H%M%S"))
+                format!("fluxsu_patched_{}.img", now.format("%Y%m%d_%H%M%S"))
             });
             let output_image = output_dir.join(name);
             std::fs::write(&output_image, &new_boot_bytes).context("write out new boot failed")?;

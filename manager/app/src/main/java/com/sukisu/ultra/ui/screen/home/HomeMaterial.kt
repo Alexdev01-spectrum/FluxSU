@@ -179,6 +179,7 @@ fun HomePagerMaterial(
                 FluxInfoRowMaterial(state = state)
                 QuickTogglesMaterial(state = rememberQuickToggleState())
             }
+            SystemMonitorMaterial()
             InfoCard(systemInfo = state.systemInfo, showFullStatus = state.showFullStatus)
             SupportLinks(onOpenUrl = actions.onOpenUrl)
             Spacer(

@@ -199,6 +199,7 @@ fun HomePagerMiuix(
                             FluxInfoRowMiuix(state = state)
                             QuickTogglesMiuix(state = rememberQuickToggleState())
                         }
+                        SystemMonitorMiuix()
                         InfoCard(
                             systemInfo = state.systemInfo,
                             showFullStatus = state.showFullStatus,

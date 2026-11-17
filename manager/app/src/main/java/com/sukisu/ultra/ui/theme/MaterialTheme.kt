@@ -83,8 +83,11 @@ fun MaterialKernelSUTheme(
         colorSpec = appSettings.colorSpec,
     )
     // FluxSU: the terminal palette is the default; a user-picked key colour still wins.
+    val fluxAccent = FluxAccentStore.accent
     val colorScheme = if (dynamicColor) {
-        remember(darkTheme, amoledMode) { fluxTerminalColorScheme(darkTheme, amoledMode) }
+        remember(darkTheme, amoledMode, fluxAccent) {
+            fluxTerminalColorScheme(darkTheme, amoledMode).withFluxAccent(fluxAccent, darkTheme)
+        }
     } else {
         generatedScheme
     }

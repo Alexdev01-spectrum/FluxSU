@@ -38,6 +38,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import android.app.ActivityManager
+import android.content.Context
+import android.os.Environment
+import android.os.StatFs
+import android.os.SystemClock
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import com.sukisu.ultra.ui.theme.FluxAccent
+import com.sukisu.ultra.ui.theme.FluxAccentStore
+import kotlinx.coroutines.delay
+import java.util.Locale
+import kotlin.math.roundToInt
 import com.sukisu.ultra.R
 import com.sukisu.ultra.data.repository.SettingsRepository
 import com.sukisu.ultra.data.repository.SettingsRepositoryImpl
@@ -197,7 +215,7 @@ private fun InfoTileMaterial(
         modifier = modifier,
         shape = CutCornerShape(topEnd = 12.dp, bottomStart = 12.dp),
         color = backgroundAwareColor(MaterialTheme.colorScheme.surfaceBright),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        border = BorderStroke(1.dp, fluxGlowBrush()),
     ) {
         Column(
             modifier = Modifier
@@ -356,13 +374,55 @@ fun QuickTogglesMiuix(state: QuickToggleState, modifier: Modifier = Modifier) {
 }
 
 // ---------------------------------------------------------------------------------------------
-// Terminal prompt header (Material)
+// Terminal prompt header, accent picker, system monitor
 // ---------------------------------------------------------------------------------------------
 
-/** A fake shell prompt with a blinking cursor and a one-line kernel status. */
+@Composable
+private fun fluxGlowBrush(): Brush {
+    val c = MaterialTheme.colorScheme
+    return Brush.linearGradient(listOf(c.primary.copy(alpha = 0.85f), c.secondary.copy(alpha = 0.35f)))
+}
+
+@Composable
+private fun rememberTypewriter(text: String, charDelayMs: Long = 32L, startDelayMs: Long = 0L): String {
+    var shown by remember(text) { mutableStateOf("") }
+    LaunchedEffect(text) {
+        delay(startDelayMs)
+        for (i in 1..text.length) {
+            shown = text.substring(0, i)
+            delay(charDelayMs)
+        }
+    }
+    return shown
+}
+
+/** A row of small swatches that switch the app's accent colour. */
+@Composable
+fun FluxAccentPicker(selectedBorder: Color, modifier: Modifier = Modifier) {
+    val current = FluxAccentStore.accent
+    val shape = CutCornerShape(topEnd = 5.dp, bottomStart = 5.dp)
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        FluxAccent.values().forEach { option ->
+            Box(
+                modifier = Modifier
+                    .size(18.dp)
+                    .background(option.dark, shape)
+                    .then(if (option == current) Modifier.border(2.dp, selectedBorder, shape) else Modifier)
+                    .clickable { FluxAccentStore.set(option) },
+            )
+        }
+    }
+}
+
+/** A fake shell prompt: the command types itself out, then a pulsing kernel status line appears. */
 @Composable
 fun TerminalPromptMaterial(state: HomeUiState, modifier: Modifier = Modifier) {
-    val cursorAlpha by rememberInfiniteTransition(label = "prompt_cursor").animateFloat(
+    val transition = rememberInfiniteTransition(label = "prompt")
+    val cursorAlpha by transition.animateFloat(
         initialValue = 1f,
         targetValue = 0f,
         animationSpec = infiniteRepeatable(
@@ -371,9 +431,24 @@ fun TerminalPromptMaterial(state: HomeUiState, modifier: Modifier = Modifier) {
         ),
         label = "prompt_cursor_alpha",
     )
+    val pulse by transition.animateFloat(
+        initialValue = 1f,
+        targetValue = 0.3f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 900, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse,
+        ),
+        label = "prompt_pulse",
+    )
     val active = state.ksuVersion != null
     val primary = MaterialTheme.colorScheme.primary
     val statusColor = if (active) primary else MaterialTheme.colorScheme.error
+
+    val command = "./status"
+    val typedCommand = rememberTypewriter(command, startDelayMs = 150L)
+    val commandDone = typedCommand.length == command.length
+    val result = if (active) "kernel module active" else "kernel module not loaded"
+    val typedResult = rememberTypewriter(if (commandDone) result else "", charDelayMs = 14L)
 
     Column(
         modifier = modifier
@@ -389,7 +464,7 @@ fun TerminalPromptMaterial(state: HomeUiState, modifier: Modifier = Modifier) {
                 fontWeight = FontWeight.Bold,
             )
             MdText(
-                text = "./status",
+                text = typedCommand,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface,
             )
@@ -398,11 +473,147 @@ fun TerminalPromptMaterial(state: HomeUiState, modifier: Modifier = Modifier) {
                 style = MaterialTheme.typography.bodyMedium,
                 color = primary.copy(alpha = cursorAlpha),
             )
+            Spacer(Modifier.weight(1f))
+            FluxAccentPicker(selectedBorder = MaterialTheme.colorScheme.onSurface)
         }
-        MdText(
-            text = if (active) "[ OK ] kernel module active" else "[FAIL] kernel module not loaded",
-            style = MaterialTheme.typography.bodySmall,
-            color = statusColor,
+        if (commandDone) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                MdText(
+                    text = "\u25CF ",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = statusColor.copy(alpha = if (active) pulse else 1f),
+                )
+                MdText(
+                    text = (if (active) "[ OK ] " else "[FAIL] ") + typedResult,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = statusColor,
+                )
+            }
+        } else {
+            Spacer(Modifier.height(16.dp))
+        }
+    }
+}
+
+private data class MonitorSnapshot(
+    val ramUsed: Long,
+    val ramTotal: Long,
+    val diskUsed: Long,
+    val diskTotal: Long,
+    val uptimeMs: Long,
+)
+
+private fun readMonitor(context: Context): MonitorSnapshot {
+    val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    val info = ActivityManager.MemoryInfo().also { am.getMemoryInfo(it) }
+    val stat = StatFs(Environment.getDataDirectory().path)
+    val total = stat.blockCountLong * stat.blockSizeLong
+    val free = stat.availableBlocksLong * stat.blockSizeLong
+    return MonitorSnapshot(
+        ramUsed = info.totalMem - info.availMem,
+        ramTotal = info.totalMem,
+        diskUsed = total - free,
+        diskTotal = total,
+        uptimeMs = SystemClock.elapsedRealtime(),
+    )
+}
+
+@Composable
+private fun rememberMonitor(): MonitorSnapshot? {
+    val context = LocalContext.current
+    var snapshot by remember { mutableStateOf<MonitorSnapshot?>(null) }
+    LaunchedEffect(Unit) {
+        while (true) {
+            snapshot = withContext(Dispatchers.IO) { runCatching { readMonitor(context) }.getOrNull() }
+            delay(2000L)
+        }
+    }
+    return snapshot
+}
+
+private fun asciiBar(fraction: Float, width: Int = 14): String {
+    val filled = (fraction.coerceIn(0f, 1f) * width).roundToInt()
+    return "\u2588".repeat(filled) + "\u2591".repeat(width - filled)
+}
+
+private fun gb(bytes: Long): String = String.format(Locale.US, "%.1f", bytes / 1_073_741_824.0)
+
+private fun formatUptime(ms: Long): String {
+    val totalMinutes = ms / 60_000L
+    val days = totalMinutes / (60 * 24)
+    val hours = (totalMinutes / 60) % 24
+    val minutes = totalMinutes % 60
+    return if (days > 0) "${days}d ${hours}h ${minutes}m" else "${hours}h ${minutes}m"
+}
+
+@Composable
+private fun MonitorRow(
+    name: String,
+    used: Long,
+    total: Long,
+    style: TextStyle,
+    accent: Color,
+    label: Color,
+    value: Color,
+) {
+    val fraction = if (total > 0L) used.toFloat() / total.toFloat() else 0f
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        BasicText(text = "$name ", style = style.copy(color = label))
+        BasicText(text = asciiBar(fraction), style = style.copy(color = accent))
+        BasicText(
+            text = " ${(fraction * 100).roundToInt()}%  ${gb(used)}/${gb(total)}G",
+            style = style.copy(color = value),
+        )
+    }
+}
+
+@Composable
+private fun MonitorBody(
+    snapshot: MonitorSnapshot,
+    accent: Color,
+    label: Color,
+    value: Color,
+    modifier: Modifier = Modifier,
+) {
+    val mono = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 12.sp)
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        BasicText(text = "// system monitor", style = mono.copy(color = accent, fontWeight = FontWeight.Bold))
+        MonitorRow("ram ", snapshot.ramUsed, snapshot.ramTotal, mono, accent, label, value)
+        MonitorRow("disk", snapshot.diskUsed, snapshot.diskTotal, mono, accent, label, value)
+        BasicText(text = "up   ${formatUptime(snapshot.uptimeMs)}", style = mono.copy(color = value))
+    }
+}
+
+@Composable
+fun SystemMonitorMaterial(modifier: Modifier = Modifier) {
+    val snapshot = rememberMonitor() ?: return
+    val c = MaterialTheme.colorScheme
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        shape = CutCornerShape(topEnd = 14.dp, bottomStart = 14.dp),
+        color = backgroundAwareColor(c.surfaceBright),
+        border = BorderStroke(1.dp, fluxGlowBrush()),
+    ) {
+        MonitorBody(
+            snapshot = snapshot,
+            accent = c.primary,
+            label = c.onSurfaceVariant,
+            value = c.onSurface,
+            modifier = Modifier.padding(14.dp),
+        )
+    }
+}
+
+@Composable
+fun SystemMonitorMiuix(modifier: Modifier = Modifier) {
+    val snapshot = rememberMonitor() ?: return
+    AppCard(modifier = modifier.fillMaxWidth(), colors = backgroundAwareCardColors()) {
+        MonitorBody(
+            snapshot = snapshot,
+            accent = MiuixTheme.colorScheme.primary,
+            label = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+            value = MiuixTheme.colorScheme.onSurface,
+            modifier = Modifier.padding(14.dp),
         )
     }
 }

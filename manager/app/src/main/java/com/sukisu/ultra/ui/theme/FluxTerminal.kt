@@ -4,6 +4,7 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
 import top.yukonga.miuix.kmp.theme.Colors
 
 /**
@@ -107,16 +108,20 @@ fun fluxTerminalColorScheme(isDark: Boolean, isAmoled: Boolean): ColorScheme =
     }
 
 /** Same palette for the Miuix shell. Only roles whose names are used by the app's overlay code. */
-fun Colors.withFluxTerminal(isDark: Boolean): Colors {
+fun Colors.withFluxTerminal(isDark: Boolean, accentChoice: FluxAccent = FluxAccent.Phosphor): Colors {
     val bg = if (isDark) Color(0xFF0A0E0A) else Color(0xFFF3F7F1)
     val card = if (isDark) Color(0xFF111711) else Color(0xFFE7EFE5)
     val cardHigh = if (isDark) Color(0xFF161D16) else Color(0xFFE0E9DE)
     val cardHighest = if (isDark) Color(0xFF1B241B) else Color(0xFFDAE4D8)
-    val accent = if (isDark) FluxTerminalPalette.Phosphor else Color(0xFF007A3D)
-    val onAccent = if (isDark) Color(0xFF00210E) else Color.White
+    val accent = if (isDark) accentChoice.dark else accentChoice.light
+    val onAccent = if (isDark) Color(0xFF06130B) else Color.White
     val text = if (isDark) FluxTerminalPalette.Ink else Color(0xFF0E1A12)
     val textSecondary = if (isDark) FluxTerminalPalette.InkDim else Color(0xFF445A4A)
-    val line = if (isDark) Color(0xFF3E6B4F) else Color(0xFF6F8A76)
+    val line = if (accentChoice == FluxAccent.Phosphor) {
+        if (isDark) Color(0xFF3E6B4F) else Color(0xFF6F8A76)
+    } else {
+        lerp(bg, accent, if (isDark) 0.4f else 0.5f)
+    }
     val danger = if (isDark) FluxTerminalPalette.Danger else Color(0xFFB3261E)
 
     return copy(

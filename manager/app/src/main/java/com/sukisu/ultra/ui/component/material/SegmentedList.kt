@@ -130,7 +130,7 @@ fun SegmentedColumn(
     Column(modifier = modifier) {
         if (title.isNotEmpty()) {
             Text(
-                text = title,
+                text = "// $title",
                 style = MaterialTheme.typography.titleSmallEmphasized,
                 color = colorScheme.primary,
                 modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
@@ -182,7 +182,7 @@ fun SegmentedColumn(
     Column(modifier = modifier) {
         if (title.isNotEmpty()) {
             Text(
-                text = title,
+                text = "// $title",
                 style = MaterialTheme.typography.titleSmallEmphasized,
                 color = colorScheme.primary,
                 modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
